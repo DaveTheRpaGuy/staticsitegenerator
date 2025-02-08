@@ -12,6 +12,7 @@ class TestHTMLNode(unittest.TestCase):
     def test_neq(self):
         node = HTMLNode("h1", "Test Heading")
         node2 = HTMLNode("h2", "Test Heading")
+        self.assertNotEqual(node, node2)
 
     def test_props_to_html(self):
         node = HTMLNode("h1", "Test Heading", None, {"href": "https://www.google.com", "target": "_blank"})

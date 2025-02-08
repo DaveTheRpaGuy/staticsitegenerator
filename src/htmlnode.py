@@ -13,7 +13,7 @@ class HTMLNode():
     def props_to_html(self):
         output = ""
         # i think i'm supposed to use reduce or something here
-        if self.props:        
+        if self.props:
             for k, v in self.props.items():
                 output += f" {k}=\"{v}\""
         return output
