@@ -1,9 +1,8 @@
 import unittest
 
-from converter import *
+from inline_markdown import *
 
-
-class TestConverter(unittest.TestCase):
+class TestInlineMarkdown(unittest.TestCase):
     def test_something(self):
         node = TextNode("This is text with a `code block` word", TextType.TEXT)
         new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
