@@ -64,11 +64,13 @@ def block_to_tag(block):
         matches = re.findall(regex, block)
         return f"h{len(matches[0])}"
     if block_type == BlockType.CODE:
-        return "code"
+        raise Exception("Code Block not supported in block_to_tag due to needing pre and code nodes.")
     if block_type == BlockType.QUOTE:
         return "blockquote"
     if block_type == BlockType.UNORDERED_LIST:
         return "ul"
     if block_type == BlockType.ORDERED_LIST:
         return "ol"
-    return "p"
+    if block_type == BlockType.PARAGRAPH:
+        return "p"
+    raise Exception("Block Type not supported.")

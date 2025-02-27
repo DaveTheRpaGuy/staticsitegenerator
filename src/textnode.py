@@ -33,8 +33,6 @@ def text_node_to_html_node(text_node):
             return LeafNode("b", text_node.text)
         case TextType.ITALIC.value:
             leaf_node = LeafNode("i", text_node.text)
-            print("printing leaf_node on next line...")
-            print(leaf_node)
             return leaf_node
         case TextType.CODE.value:
             return LeafNode("code", text_node.text)

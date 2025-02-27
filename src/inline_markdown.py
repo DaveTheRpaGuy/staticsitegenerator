@@ -7,6 +7,7 @@ def text_to_text_nodes(text):
 
     text_nodes = split_nodes_delimiter(text_nodes, "**", TextType.BOLD)
     text_nodes = split_nodes_delimiter(text_nodes, "*", TextType.ITALIC)
+    text_nodes = split_nodes_delimiter(text_nodes, "_", TextType.ITALIC)
     text_nodes = split_nodes_delimiter(text_nodes, "`", TextType.CODE)
     text_nodes = split_nodes_image(text_nodes)
     text_nodes = split_nodes_link(text_nodes)
@@ -72,12 +73,9 @@ def split_nodes_link(old_nodes):
 def extract_markdown_images(text):
     regex = r"!\[([\w\s]+?)\]\((\w+:\/\/.*?)\)"
     matches = re.findall(regex, text)
-    #print("print image matches...")
-    #print(matches)
     return matches
 
 def extract_markdown_links(text):
     regex = r"[^!]\[([\w\s]+?)\]\((\w+:\/\/.*?)\)"
-    #print("print link matches...")
     matches = re.findall(regex, text)
     return matches
