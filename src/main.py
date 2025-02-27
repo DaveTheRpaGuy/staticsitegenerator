@@ -6,7 +6,13 @@ from textnode import TextNode, TextType
 from htmlnode import HTMLNode
 from markdown_html import markdown_to_html_node
 
+#How to start local server:
+#python3 src/main.py
+#cd public && python3 -m http.server 8888
+
 def main():
+
+
     static_path = "static"
     public_path = "public"
     
