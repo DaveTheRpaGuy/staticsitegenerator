@@ -34,7 +34,8 @@ def create_new_html_node(block):
         
         if block_type == BlockType.QUOTE:
             block_tag = block_to_tag(block)
-            cleaned_block = re.sub(r'^> ', '', block, re.M)
+            cleaned_block = re.sub(r'>', '', block, re.M)
+            cleaned_block = ' '.join([line.strip() for line in cleaned_block.split('\n')])
             item_children = text_to_children(cleaned_block)
             parent_quote_node = ParentNode(block_tag, item_children, None)
             return parent_quote_node
@@ -44,7 +45,7 @@ def create_new_html_node(block):
             items = extract_list_items(block)
             item_nodes = []
             for item in items:
-                item_children = text_to_children(item)
+                item_children = text_to_children(item.strip())
                 item_parent_node = ParentNode("li", item_children, None)
                 item_nodes.append(item_parent_node)
             parent_list_node = ParentNode(block_tag, item_nodes, None)

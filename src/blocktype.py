@@ -30,8 +30,10 @@ def is_heading(block):
     return False
 
 def is_code(block):
-    regex = r"^```[\s\S]+```$"
-    return re.findall(regex, block)
+    # Match a block that starts with ``` and ends with ```
+    # The (?s) makes . match newlines as well
+    regex = r"(?s)^```.*```$"
+    return bool(re.match(regex, block))
 
 def is_quote(block):
     for line in block.split("\n"):
@@ -41,7 +43,7 @@ def is_quote(block):
 
 def is_unordered_list(block):
     for line in block.split("\n"):
-        if line.startswith("*") == False and line.startswith("-") == False:
+        if line.startswith("* ") == False and line.startswith("- ") == False:
             return False
     return True
 
