@@ -12,9 +12,9 @@ from markdown_html import markdown_to_html_node
 #cd public && python3 -m http.server 8888
 
 def main():
-    basepath = sys.argv[0]
-    if not basepath:
-        basepath = "/"
+    basepath = "/"
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
 
     static_path = "static"
     public_path = "docs"
@@ -65,7 +65,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
     html = node.to_html()
     title = extract_title(from_file_contents)
     full_html = template_file_contents.replace("{{ Title }}", title).replace("{{ Content }}", html)
-    full_html = full_html.replace('href="/', 'href="{BASEPATH}').replace('src="/', 'src="{BASEPATH}')
+    full_html = full_html.replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
     create_file(dest_path, full_html)
 
 def read_file(file_path):
