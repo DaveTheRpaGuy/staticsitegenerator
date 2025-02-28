@@ -1,6 +1,7 @@
 import shutil
 import os
 import re
+import sys
 
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode
@@ -11,13 +12,16 @@ from markdown_html import markdown_to_html_node
 #cd public && python3 -m http.server 8888
 
 def main():
-
+    basepath = sys.argv[0]
+    if not basepath:
+        basepath = "/"
 
     static_path = "static"
-    public_path = "public"
+    public_path = "docs"
+    content_path = "content"
     
     copy_to(static_path, public_path)
-    generate_pages_recursively("content", "template.html", "public")
+    generate_pages_recursively(content_path, "template.html", public_path, basepath)
     
 def copy_to(source, destination):
     if os.path.exists(source) == False:
@@ -41,7 +45,7 @@ def extract_title(markdown):
     heading_one_text = re.sub(r'^#', '', matches[0].strip()).strip()
     return heading_one_text
 
-def generate_pages_recursively(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursively(dir_path_content, template_path, dest_dir_path, basepath):
     if os.path.exists(dest_dir_path) == False:
         os.mkdir(dest_dir_path)
     dir_contents = os.listdir(dir_path_content)
@@ -49,11 +53,11 @@ def generate_pages_recursively(dir_path_content, template_path, dest_dir_path):
         source_path = os.path.join(dir_path_content, name)
         destination_path = os.path.join(dest_dir_path, name)
         if os.path.isfile(source_path):
-            generate_page(source_path, template_path, destination_path.replace('.md', '.html'))
+            generate_page(source_path, template_path, destination_path.replace('.md', '.html'), basepath)
             continue
-        generate_pages_recursively(source_path, template_path, destination_path)
+        generate_pages_recursively(source_path, template_path, destination_path, basepath)
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     from_file_contents = read_file(from_path)
     template_file_contents = read_file(template_path)
@@ -61,6 +65,7 @@ def generate_page(from_path, template_path, dest_path):
     html = node.to_html()
     title = extract_title(from_file_contents)
     full_html = template_file_contents.replace("{{ Title }}", title).replace("{{ Content }}", html)
+    full_html = full_html.replace('href="/', 'href="{BASEPATH}').replace('src="/', 'src="{BASEPATH}')
     create_file(dest_path, full_html)
 
 def read_file(file_path):
